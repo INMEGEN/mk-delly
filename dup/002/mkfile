@@ -1,0 +1,25 @@
+<config.mk
+
+TOOL="DUP"
+
+"results/"$TOOL".bcf": results/merge.bcf data/%.bam
+        set -x
+        mkdir -p `dirname $target`
+        delly-parallel call -t $TOOL -g $REF -o $target".build" \ 
+                 -v results/merge.bcf `ls data/*.bam`
+        && mv $target".build" $target
+
+results/merge.bcf: bin/targets-call
+	set -x
+	mkdir -p `dirname $target`	
+	delly-parallel merge -t $TOOL -m $MIN_LONG -n $MAX_LONG \
+		-o $target".build" -b 500 -r $OVERLAP `cat $prereq`
+
+results/Batch_%.call.bcf: bin/targets-Batch%
+	set -x
+	mkdir -p `dirname $target`
+	delly-parallel call -t $TOOL -g $REF -o $target".build" \
+		 `cat $prereq` \
+	&& mv $target".build" $target
+
+
