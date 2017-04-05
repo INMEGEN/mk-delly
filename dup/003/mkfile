@@ -1,25 +1,29 @@
 <config.mk
 
-TOOL="DUP"
-
-"results/"$TOOL".bcf": results/merge.bcf data/%.bam
-        set -x
-        mkdir -p `dirname $target`
-        delly-parallel call -t $TOOL -g $REF -o $target".build" \ 
-                 -v results/merge.bcf `ls data/*.bam`
-        && mv $target".build" $target
-
-results/merge.bcf: bin/targets-call
+all:V: bin/targets
 	set -x
-	mkdir -p `dirname $target`	
-	delly-parallel merge -t $TOOL -m $MIN_LONG -n $MAX_LONG \
-		-o $target".build" -b 500 -r $OVERLAP `cat $prereq`
+	mk creaBatch
+	bin/targets | xargs mk
 
-results/Batch_%.call.bcf: bin/targets-Batch%
+results/DUP.bcf: results/Batch00.bcf  results/Batch01.bcf results/Batch02.bcf  results/Batch03.bcf results/Batch04.bcf results/Batch05.bcf results/Batch06.bcf results/Batch07.bcf  results/Batch08.bcf results/Batch09.bcf results/Batch10.bcf results/Batch11.bcf
+	bcftools merge -m id -O b -o $target $prereq
+
+results/Batch%.bcf: data/Batch_clean%
 	set -x
 	mkdir -p `dirname $target`
 	delly-parallel call -t $TOOL -g $REF -o $target".build" \
-		 `cat $prereq` \
+		 -v data/merge.bcf `cat $prereq` \
 	&& mv $target".build" $target
 
+data/Batch_clean%: data/Batch%
+	set -x
+	cat $prereq | tr "\n" " " > $target".build" \
+	&& mv $target".build" $target
+
+creaBatch:V: data/merge.bcf
+	set -x
+	ls data/bams/*.bam > out.txt
+	split -l 8 out.txt -a 2 -d Batch \
+	&& mv Batch* data/ \
+	&& rm out.txt
 
