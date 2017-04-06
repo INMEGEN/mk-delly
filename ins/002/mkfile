@@ -1,0 +1,9 @@
+<config.mk
+
+results/merge.bcf: bin/targets-Batchs
+	set -x
+	mkdir -p `dirname $target`	
+	delly-parallel merge -t $TOOL -m $MIN_LONG -n $MAX_LONG \
+		-o $target".build" -b 500 -r $OVERLAP `cat $prereq | tr "\n" " "` \
+	&& mv $target".build" $target
+
