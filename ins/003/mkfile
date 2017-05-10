@@ -5,7 +5,7 @@ all:V: bin/targets
 	mk creaBatch
 	bin/targets | xargs mk
 
-results/DUP.bcf: results/Batch00.bcf  results/Batch01.bcf results/Batch02.bcf  results/Batch03.bcf results/Batch04.bcf results/Batch05.bcf results/Batch06.bcf results/Batch07.bcf  results/Batch08.bcf results/Batch09.bcf results/Batch10.bcf results/Batch11.bcf
+results/INS.bcf: results/Batch00.bcf  results/Batch01.bcf results/Batch02.bcf  results/Batch03.bcf results/Batch04.bcf results/Batch05.bcf results/Batch06.bcf results/Batch07.bcf  results/Batch08.bcf results/Batch09.bcf results/Batch10.bcf results/Batch11.bcf
 	bcftools merge -m id -O b -o $target $prereq
 
 results/Batch%.bcf: data/Batch_clean%

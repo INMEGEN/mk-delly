@@ -16,4 +16,4 @@ MAX_LONG="1000000"
 OVERLAP="0.8"
 
 #Tipo de variante estructural a encontrar
-TOOL="DUP"
+TOOL="DEL"
