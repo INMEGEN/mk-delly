@@ -1,0 +1,3 @@
+#!/bin/bash
+TOOL=$(pwd | tr "/" "\n" | tail -n2 | head -n1)
+echo "results/$TOOL.germline.bcf"
