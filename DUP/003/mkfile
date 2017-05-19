@@ -1,0 +1,14 @@
+< ../config.mk
+
+all:QV: bin/targets
+	bin/targets | xargs mk
+
+results/geno.%.bam:Q: data/bams/%.bam
+	TOOL=$(pwd | tr "/" "\n" | tail -n2 | head -n1)
+	echo "doing $target for $TOOL"
+	delly-parallel call -t $TOOL -g $REF -v data/merge/$TOOL.merge.bcf -o $target.build $prereq &&
+	for f in $target*
+	do
+		o_file=$(echo $f | sed s#.build##g)
+		mv $f $o_file
+	done

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ls data/bams/*.bam | sed s#data/bams/#results/geno.#g
