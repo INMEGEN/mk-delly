@@ -1,0 +1,4 @@
+#!/bin/bash
+ls tmp/Batch* | grep -v "clean" | sed -r \
+	-e 's#tmp#results#g' | \
+	awk '{print $0 ".bcf"}'
