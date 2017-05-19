@@ -1,5 +1,4 @@
 #!/bin/bash
-ls data/Batch* | grep -v "clean" | sed -r \
-	-e 's#data#results#g' | \
+ls tmp/Batch* | grep -v "clean" | sed -r \
+	-e 's#tmp#results#g' | \
 	awk '{print $0 ".bcf"}'
-

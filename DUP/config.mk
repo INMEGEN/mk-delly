@@ -9,7 +9,7 @@ REF="/castle/iaguilar/resources/references/human_g1k_v37_decoy.fasta"
 OMP_NUM_THREADS="8"
 
 #Number of files per batch for Delly2 analysis
-BATCH_N=2
+BATCH_N="2"
 
 #Longitud mínima/máxima de eventos registrados
 MIN_LONG="500"

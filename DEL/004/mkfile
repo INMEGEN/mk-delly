@@ -1,0 +1,17 @@
+< ../config.mk
+
+all:QV: bin/targets
+	ls data/*.bam | tr "\n" " " > tmp/prereq.list
+	bin/targets | xargs mk
+
+results/%.germline.bcf:Q: tmp/%.merged.bcf
+	TOOL=$(pwd | tr "/" "\n" | tail -n2 | head -n1)
+	echo "doing $target for $TOOL"
+	delly-parallel filter -t $TOOL -f germline -o $target.build $prereq &&
+	mv $target.build $target
+
+tmp/%.merged.bcf:Q: 
+	echo "doing also $target"
+	bcftools merge -m id -O b -o $target.build $(cat tmp/prereq.list) &&
+	mv $target.build $target
+	bcftools index -f $target

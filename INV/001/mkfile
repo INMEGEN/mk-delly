@@ -1,26 +1,25 @@
-<config.mk
+< ../config.mk
 
-all:V: bin/targets
-	set -x
+all:VQ: bin/targets
+##	set -x
 	mk creaBatch
 	bin/targets | xargs mk
 	
-results/Batch%.bcf: data/Batch_clean%
-	set -x
+results/Batch%.bcf:Q: tmp/Batch_clean%
+##	set -x
 	mkdir -p `dirname $target`
-	delly-parallel call -t $TOOL -g $REF -o $target".build" \
-		 `cat $prereq` \
-	&& mv $target".build" $target
+	TOOL=$(pwd | tr "/" "\n" | tail -n2 | head -n1)
+	delly-parallel call -t $TOOL -g $REF -o $target".build" `cat $prereq` &&
+	mv $target".build" $target
 
-data/Batch_clean%: data/Batch%
-	set -x
-	cat $prereq | tr "\n" " " > $target".build" \
-	&& mv $target".build" $target
+tmp/Batch_clean%:Q: tmp/Batch%
+##	set -x
+	cat $prereq | tr "\n" " " > $target".build" &&
+	mv $target".build" $target
 
-creaBatch:V: 
-	set -x
+creaBatch:QV: 
+##	set -x
 	ls data/bams/*.bam > out.txt
-	split -l 8 out.txt -a 2 -d Batch \
-	&& mv Batch* data/ \
-	&& rm out.txt
-
+	split -l $BATCH_N out.txt -a 2 -d Batch &&
+	mv Batch* tmp/ &&
+	rm out.txt
