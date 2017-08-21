@@ -14,6 +14,7 @@ results/Batch%.bcf:Q: tmp/Batch_clean%
 
 tmp/Batch_clean%:Q: tmp/Batch%
 ##	set -x
+	mkdir -p `dirname $target`
 	cat $prereq | tr "\n" " " > $target".build" &&
 	mv $target".build" $target
 
