@@ -2,12 +2,12 @@
 
 ##Apply Germline filter
 results/%.bcf:Q: results/%.merged.bcf
-	set -x
-	echo "[DEBUGGING] aplying final germline filter"
-	delly-parallel filter \
-		-t $stem \
-		-f germline \
-		$prereq 	
+##	set -x
+	echo "[DEBUGGING] aplying final germline filter [NOT WORKING YET]"
+##	delly-parallel filter \
+##		-t $stem \
+##		-f germline \
+##		$prereq 	
 ##find out what is the problem, why does it throw core dump error; suspects: bad index, bad input bams(probably not, sinsce they would crash it previous steps)
 ##	&& mv $target.build $target \
 ##        && mv $target.build.csi $target.csi
