@@ -7,10 +7,10 @@ REF="/reference/ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta
 
 #Delly2 parametrization
 #Number of threads to run parallel Delly2
-OMP_NUM_THREADS="1"
+OMP_NUM_THREADS="4"
 
 #Number of files per batch for Delly2 analysis
-BATCH_N="1"
+##BATCH_N="1"	##DEPRECATED
 
 #Longitud mínima/máxima de eventos registrados
 MIN_LONG="500"

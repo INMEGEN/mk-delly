@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "results/DEL.bcf"
+echo "results/DUP.bcf"
+echo "results/INV.bcf"
+echo "results/TRA.bcf"
+echo "results/INS.bcf"
