@@ -1,9 +1,17 @@
-# Delly2 pipeline for Structural Variant detection
+# mk-delly - pipeline for Structural Variant detection.
 
 ### Abreviations:
-**SV**: Structural Variants
+**SVs**: Structural Variants
 
-## Pipeline detects 5 types of structural variation:
+### Dependencies:
+**[Delly2](https://github.com/dellytools/delly)**
+**[bcftools](https://samtools.github.io/bcftools/)**
+
+## About Delly2.
+
+Delly2 development and installation instructions can be found at: [https://github.com/dellytools/delly](https://github.com/dellytools/delly)
+Delly2 publication can be found at: [Rausch, T., Zichner, T., Schlattl, A., Stütz, A. M., Benes, V., & Korbel, J. O. (2012). DELLY: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics, 28(18), i333-i339.](https://academic.oup.com/bioinformatics/article/28/18/i333/245403/DELLY-structural-variant-discovery-by-integrated)
+This pipeline uses Delly2 to detect 5 types of SVs:
 
 - DUPlications
 - DELetions
@@ -11,47 +19,35 @@
 - TRAnslocations
 - INVertions
 
-### Each type of detections is performed in a separate module (a separate dir named after the first three letters of the event; e.g. **DUP**lications are detected with the code in the **DUP** diectory).
-Every module works in 4 stages:
+Delly 2 is an integrated structural variant prediction method that can discover and genotype deletions, tandem duplications, inversions, small insertions, and translocations at single-nucleotide resolution in short-read massively parallel sequencing data.
 
-- 001 -> SV calling by groups of samples. Works in batches of X number of .bam files, increasing sensibility o variant calling. Results are one BCF file per batch of .bams analized.
+The mk-delly pipeline takes BAM files (SAM - Sequence Allignment Map- data in compressed format) as input; then it uses paired-ends and split-reads to sensitively and accurately delineate genomic rearrangements by
+comparison against the same reference genome used to generate the BAM files.
 
-- 002 -> Collapses BCF files from stage 001, to merge Structural Variants detected by delly call. Result is a single .bcf file for all of the detected events.
+Each type of SV is detected diferently by Delly2; the mk-delly pipeline performs detection for all 5 types of SV, producing a bcf (compressed vcf format) for each type.
 
-- 003 -> SV recalling of all the same original .bam samples from 001, but using the .bcf file resulting from 002. Results are a recalled .bcf file for every .bam sample in 001/data, containing a sample level refined variant call for SV.
+## Pipeline configuration.
 
-- 004 -> bcftools merging of every sample.bcf from 003/results. Then, delly aplies a germline filter to refine SV calling.
+### Input files
 
-# Execution
-STAGE 001
-1. Go into the directory of the SV you want to call.
-1. Go into stage 001 directory.
-	1. Create data/ results/ and tmp/ directories if not already present.
-1. Create symlink from your bams directory to 001/data/bams
-1. execute mk all
+mk-delly requires:
+1) .bam files with .bai, that must be located at 001/data.
+1) .fasta file for the reference genome, the same version used to generate the .bam files.
 
-STAGE 002
-1. Go into stage 002.
-	1. Create results/ and tmp/ directories if not already present.
-1. Create symlink from ../001/results to 002/data
-1. Execute bash bin/mkfile_generator.sh
-1. Execute mk all
+### Configuration file
 
-STAGE 003
-1. Go into stage 003.
-	1. Create results/ and tmp/ directories if not already present.
-1. Create symlinks with full paths from ../001/data/bams to data/bams (symlink MUST BE DECLARED WITH FULL PATH).
-1. Create symlinks with full paths from ../002/results to data/merge (symlink MUST BE DECLARED WITH FULL PATH).
-1. Execute mk all.
+This pipeline includes a config.mk file, where you can adjust the following paramters:
 
-SATGE 004
-1. Go into stage 004.
-	1. Create results/ and tmp/ directories if not already present.
-1. Create symlink from ../003/results to 004/data.
-1. Execute mk all.
+PATH: path to search for executable files.
+REF: path to reference genome.
+MIN_LONG: SVs must span at least this number of base pairs to be reported by Delly2. (Delly2 recomendation is 500).
+MAX_LONG: SVs greater than this number of base pair won't be reported by Delly2. (Delly2 recomendation is 1000000).
+OVERLAP: fraction of reciprocal overlap required by same type SVs to consider them the same event.  (dbVAR recomendation is 0.8, meaning 80% reciprocal overlap).
+
+## Module description.
+
+- 001 -> Takes multiple .bam files and performs multisample Stuctural Variant Calling, then merges SVs by reciprocal overlaping, and finally applies a germline filter to evaluate SVs of confidence. Results are a BCF file per every SVs type detected.
 
 # **TO DO**
-- [ ] Describe how to setup the pipeline for automated function. At this moments, it requires to manually create symlinks, and run bin/mkfile_generator.sh at every 002 stage. Could this be automatized?
-- [ ] Test INS and TRA detection. First test failed because sample .bams did not present such structural variation. Needs to be tested with more samples, or control samples.
-- [ ] Include a 005 module in every SV type directory. 005 module will annotate SV in the .bcf file from 004, using VEP-ensembl console version.
-- [ ] Include a 006 module in every SV type directory. 006 module will generate graphics for results interpretation.
+- [ ] Solve 001/mkfile error when trying to apply germline filter. (this does not affect SV calling, nor SV merging)
+- [ ] Include a module that generates graphics for results interpretation.

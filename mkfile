@@ -31,6 +31,7 @@ results/%.merged.bcf:	results/%.call.bcf
 results/%.call.bcf:
 	set -x
 	echo "[DEBUGGING] Calling $stem SV events"
+	echo "Threads: "$OMP_NUM_THREADS
 	mkdir -p `dirname $target`
 	delly-parallel call \
 		-t $stem \
