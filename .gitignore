@@ -1,5 +1,5 @@
 bin/bai_validator.sh
 *condor*
-data/*
-results/*
+*data/*
+*results/*
 *.swp
