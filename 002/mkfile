@@ -1,0 +1,14 @@
+< config.mk
+
+##Re-genotype merged SV site list
+results/([A-Z]+)/(.+)\.delly_regenotyped\.([A-Z]+)\.bcf:R:
+	set -x
+	mkdir -p `dirname $target`
+	delly-parallel call \
+	-t $stem1 \
+	-g $REF \
+	-v data/merged_bcf/$stem1.merged.bcf \
+	-o $target.build \
+	data/bams/$stem2.bam \
+	&& mv $target.build $target \
+	&& mv $target.build.csi $target.csi
