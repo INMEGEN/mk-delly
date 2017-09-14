@@ -1,6 +1,5 @@
-*
-!README.md
-!mkfile
-!bin/targets
-!config.mk
-
+bin/bai_validator.sh
+*condor*
+data/*
+results/*
+*.swp
