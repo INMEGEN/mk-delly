@@ -13,7 +13,8 @@ results/%.merged.bcf:	results/%.call.bcf
 		-r $OVERLAP \
 		$prereq \
         && mv $target.build $target \
-	&& mv $target.build.csi $target.csi
+	&& mv $target.build.csi $target.csi \
+	&& rm $prereq*
 
 ##SV calling using all samples in data/ 
 results/%.call.bcf:
