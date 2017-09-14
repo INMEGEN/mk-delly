@@ -7,7 +7,7 @@ results/%.bcf:Q: results/%.merged.bcf
 ##	delly-parallel filter \
 ##		-t $stem \
 ##		-f germline \
-##		$prereq 	
+##		$prereq
 ##find out what is the problem, why does it throw core dump error; suspects: bad index, bad input bams(probably not, sinsce they would crash it previous steps)
 ##	&& mv $target.build $target \
 ##        && mv $target.build.csi $target.csi
@@ -20,7 +20,7 @@ results/%.merged.bcf:	results/%.call.bcf
 		-t $stem \
 		-m $MIN_LONG \
 		-n $MAX_LONG \
-        	-o $target.build \
+		-o $target.build \
 		-b 500 \
 		-r $OVERLAP \
 		$prereq \
