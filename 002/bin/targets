@@ -7,6 +7,6 @@ do
 	find -L data/bams/ \
 	-type f \
 	-name "*.bam" \
-	| sed -e "s#data/bams/#results/#" \
+	| sed -e "s#data/bams/#results/$TYPE/#" \
 	-e "s#.bam#.delly_regenotyped.$TYPE.bcf#"
 done
