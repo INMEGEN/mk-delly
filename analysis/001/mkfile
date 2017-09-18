@@ -29,4 +29,4 @@ results/%.call.bcf:
 	&& mv $target.build.csi $target.csi
 
 clean:V:
-	rm results/*.call.bcf
+	rm results/*.call.bcf*
