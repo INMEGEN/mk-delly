@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "results/DEL.merged.bcf"
+echo "results/DUP.merged.bcf"
+echo "results/INV.merged.bcf"
+echo "results/TRA.merged.bcf"
+echo "results/INS.merged.bcf"

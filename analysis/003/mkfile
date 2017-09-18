@@ -1,0 +1,28 @@
+< config.mk
+
+#Apply the germline SV filter
+results/%.delly_germline.bcf: results/%.merged.bcf
+	set -x
+	mkdir -p `dirname $target`
+	delly-parallel filter \
+	-t $stem \
+	-m $MIN_LONG \
+	-n $MAX_LONG \
+	-f germline \
+	-o $target.build \
+	-p \
+	$prereq \
+	&& mv $target.build $target \
+	&& mv $target.build.csi $target.csi
+
+#Merge all re-genotyped samples to get a single VCF/BCF using bcftools merge
+results/%.merged.bcf: data/%
+	set -x
+        mkdir -p `dirname $target`
+	bcftools merge \
+	-m id \
+	-O b \
+	-o $target.build \
+	$prereq/*.bcf \
+	&& mv $target.build $target \
+	&& bcftools index -f $target
