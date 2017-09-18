@@ -1,3 +1,24 @@
+## DESCRIPTION:
+## mk module for initial Structural Variant (SV) calling in mk-delly pipeline.
+## The script first performs multisample (SV) calling over a batch of bam files; then, detected SV sites are merged into a unified bcf file to be used as reference for future regenotyping in the next mk module in the pipeline.
+##
+## USAGE:
+## Alternative 1: Single target execution.
+##	mk results/<SV_TYPE>.merged.bcf
+##	where <SV_TYPE> must be: DEL, DUP, INV, TRA or INS.
+##
+##	example:
+##	mk results/DEL.merged.bcf
+##
+## Alternative 2: Multiple target tandem execution.
+##	bin/targets | xargs mk
+##
+## Alternative 3: Multiple target parallel execution. NOTE: requires HTCondor.
+##	condor submit
+##
+## AUTHOR:
+##	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
+
 < config.mk
 
 ##Merge SV sites into a unified site list
