@@ -1,0 +1,53 @@
+## DESCRIPTION:
+## mk module for initial Structural Variant (SV) calling in mk-delly pipeline.
+## The script first performs multisample (SV) calling over a batch of bam files; then, detected SV sites are merged into a unified bcf file to be used as reference for future regenotyping in the next mk module in the pipeline.
+##
+## USAGE:
+## Alternative 1: Single target execution.
+##	mk results/<SV_TYPE>.merged.bcf
+##	where <SV_TYPE> must be: DEL, DUP, INV, TRA or INS.
+##
+##	example:
+##	mk results/DEL.merged.bcf
+##
+## Alternative 2: Multiple target tandem execution.
+##	bin/targets | xargs mk
+##
+## Alternative 3: Multiple target parallel execution. NOTE: requires HTCondor.
+##	condor submit
+##
+## AUTHOR:
+##	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
+
+< config.mk
+
+##Merge SV sites into a unified site list
+results/%.merged.bcf:	results/%.call.bcf
+	set -x
+	mkdir -p `dirname $target`
+	delly-parallel merge \
+		-t $stem \
+		-m $MIN_LONG \
+		-n $MAX_LONG \
+		-o $target.build \
+		-b 500 \
+		-r $OVERLAP \
+		$prereq \
+        && mv $target.build $target \
+	&& mv $target.build.csi $target.csi #\
+#	&& rm $prereq*
+
+##SV calling using all samples in data/ 
+results/%.call.bcf:
+	set -x
+	mkdir -p `dirname $target`
+	delly-parallel call \
+		-t $stem \
+		-g $REF \
+		-o $target.build \
+		data/*.bam \
+	&& mv $target.build $target \
+	&& mv $target.build.csi $target.csi
+
+clean:V:
+	rm results/*.call.bcf*

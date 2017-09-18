@@ -1,0 +1,15 @@
+#!/bin/bash
+##
+## DESCRIPTION:
+## Script to print required mk targets to STDOUT.
+## For use with Delly2 mk module 001, in combination with `xargs mk`; thus, target names are created for every type of Structural Variants detectable by Delly2 (DEL - deletions, DUP - duplications, INV - invertions, TRA - translocations, INS - small insertions).
+## USAGE:
+##	bin/targets | xargs mk
+## AUTHOR:
+##	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/) - 2017
+
+echo "results/DEL.merged.bcf"
+echo "results/DUP.merged.bcf"
+echo "results/INV.merged.bcf"
+echo "results/TRA.merged.bcf"
+echo "results/INS.merged.bcf"
