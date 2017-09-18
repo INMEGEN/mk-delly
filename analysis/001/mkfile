@@ -3,7 +3,7 @@
 ##Merge SV sites into a unified site list
 results/%.merged.bcf:	results/%.call.bcf
 	set -x
-	echo "[DEBUGGING] merging SV sites"
+	mkdir -p `dirname $target`
 	delly-parallel merge \
 		-t $stem \
 		-m $MIN_LONG \
@@ -13,14 +13,12 @@ results/%.merged.bcf:	results/%.call.bcf
 		-r $OVERLAP \
 		$prereq \
         && mv $target.build $target \
-	&& mv $target.build.csi $target.csi \
-	&& rm $prereq*
+	&& mv $target.build.csi $target.csi #\
+#	&& rm $prereq*
 
 ##SV calling using all samples in data/ 
 results/%.call.bcf:
 	set -x
-	echo "[DEBUGGING] Calling $stem SV events"
-	echo "Threads: "$OMP_NUM_THREADS
 	mkdir -p `dirname $target`
 	delly-parallel call \
 		-t $stem \
@@ -29,3 +27,6 @@ results/%.call.bcf:
 		data/*.bam \
 	&& mv $target.build $target \
 	&& mv $target.build.csi $target.csi
+
+clean:V:
+	rm results/*.call.bcf
