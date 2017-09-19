@@ -1,3 +1,24 @@
+## DESCRIPTION:
+## mk module Structural Variant (SV) bcf file joining and germline filtering using mk-delly pipeline.
+## The script performs merging of multiple bcf files from SV calling into a single multisample bcf file; then, applies Delly2 germline filtering to keep only SV that pass the criteria of the filter.
+##
+## USAGE:
+## Alternative 1: Single target execution.
+##      mk results/<SV_TYPE>.delly_germline.bcf
+##      where <SV_TYPE> must be: DEL, DUP, INV, TRA or INS.
+##
+##      example:
+##      mk results/DEL.delly_germline.bcf
+##
+## Alternative 2: Multiple target tandem execution.
+##      bin/targets | xargs mk
+##
+## Alternative 3: Multiple target parallel execution. NOTE: requires HTCondor.
+##      condor submit
+##
+## AUTHOR:
+##      Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
+
 < config.mk
 
 #Apply the germline SV filter
