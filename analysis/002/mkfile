@@ -1,3 +1,24 @@
+## DESCRIPTION:
+## mk module Structural Variant (SV) re-genotyping using mk-delly pipeline.
+## The script performs single sample SV calling from a bam file using a unified bcf file as reference for re-genotyping.
+##
+## USAGE:
+## Alternative 1: Single target execution.
+##	mk results/<SV_TYPE>/sample.<SV_TYPE>.bcf
+##	where <SV_TYPE> must be: DEL, DUP, INV, TRA or INS.
+##
+##	example:
+##	mk results/DEL/subject1.delly_regenotyped.DEL.bcf
+##
+## Alternative 2: Multiple target tandem execution.
+##	bin/targets | xargs mk
+##
+## Alternative 3: Multiple target parallel execution. NOTE: requires HTCondor.
+##	condor submit
+##
+## AUTHOR:
+##	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
+
 < config.mk
 
 ##Re-genotype merged SV site list

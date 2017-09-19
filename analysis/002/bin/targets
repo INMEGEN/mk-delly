@@ -1,4 +1,13 @@
 #!/bin/bash
+##
+## DESCRIPTION:
+## Script to print required mk targets to STDOUT.
+## For use with Delly2 mk module 002, in combination with `xargs mk. 
+## Script searches for every .bam file in data/ directory, the changes manipulates the path string to generate target names for a bcf for every type of Structural Variants detectable by Delly2 (DEL - deletions, DUP - duplications, INV - invertions, TRA - translocations, INS - small insertions).
+## USAGE:
+## 	bin/targets | xargs mk
+## AUTHOR:
+## 	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
 
 SV_TYPES=(DEL DUP INV TRA INS)
 
