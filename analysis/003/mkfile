@@ -26,3 +26,6 @@ results/%.merged.bcf: data/%
 	$prereq/*.bcf \
 	&& mv $target.build $target \
 	&& bcftools index -f $target
+
+clean:V:
+	rm results/*.merged.bcf*
