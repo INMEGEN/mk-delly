@@ -3,4 +3,5 @@ analysis/*/condor*
 analysis/*/data/*
 analysis/*/results/*
 analysis/*/reference*
+analysis/*/Logs/*
 *.swp
