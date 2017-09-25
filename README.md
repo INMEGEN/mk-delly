@@ -86,6 +86,7 @@ Final results are a BCF file for every SV type detected.
 
 ## mk-delly directory structure
 
+```
 mk-delly/
 ├── analysis
 │   ├── 001
@@ -271,3 +272,7 @@ mk-delly/
 ├── notes
 ├── README.md
 └── reference -> /reference/ftp.broadinstitute.org/bundle/hg38/  [recursive, not followed]
+```
+
+### References
+[1] [Tobias Rausch, Thomas Zichner, Andreas Schlattl, Adrian M. Stuetz, Vladimir Benes, Jan O. Korbel. Delly: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics 2012 28: i333-i339.](https://academic.oup.com/bioinformatics/article/28/18/i333/245403/DELLY-structural-variant-discovery-by-integrated)
