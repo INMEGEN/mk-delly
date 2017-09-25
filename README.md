@@ -25,7 +25,7 @@ IMPORTANT NOTE: mk-delly pipeline detects only Germline SVs (there is no module 
 
 ### Dependencies:
 **[Delly2](https://github.com/dellytools/delly)**
-IMPORTANT NOTE: Delly2 must be installed in multi-threading mode, and should me called by `delly-parallel` command
+IMPORTANT NOTE: Delly2 must be installed in multi-threading mode, and should me called by `delly-parallel` command.
 Delly2 development and installation instructions can be found at: [https://github.com/dellytools/delly](https://github.com/dellytools/delly).
 Delly2 publication can be found at: [ Rausch, T., Zichner, T., Schlattl, A., Stütz, A. M., Benes, V., & Korbel, J. O. (2012). DELLY: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics, 28(18), $
 
