@@ -4,7 +4,6 @@
 **SVs**: Structural Variants
 
 ## About mk-delly
-The mk-delly pipeline detects only Germline SVs (there is no module for Somatic SVs detection; for Somatic SV detection see [Delly2](https://github.com/dellytools/delly)).
 
 The mk-delly pipeline uses Delly2 to detect 5 types of Germline SVs:
 
@@ -19,6 +18,8 @@ Delly 2 is an integrated structural variant prediction method that can discover 
 The mk-delly pipeline takes multiple BAM files (SAM - Sequence Allignment Map- data in compressed format) as input; then, implementing Delly2, it uses paired-ends and split-reads to sensitively and accurately delineate genomic rearrangements by comparison against the same reference genome used to generate the BAM files.
 
 Since each type of SV is detected diferently by Delly2, the mk-delly pipeline performs separate detection for all 5 types of SV, producing a final bcf (compressed vcf format) for each type.
+
+IMPORTANT NOTE: mk-delly pipeline detects only Germline SVs (there is no module for Somatic SVs detection; for Somatic SV detection see [Delly2](https://github.com/dellytools/delly)).
 
 ## Pipeline configuration.
 
@@ -57,8 +58,6 @@ Module 001 takes multiple .bam files and performs multi-sample SV calling using 
 
 After SV calling, module 001 uses `delly-parallel merge` to detect closely located SV events, and merge them by reciprocal overlap.
 
-applies a germline filter to evaluate SVs of confidence. Results are a BCF file per every SVs type detected.
-
 **002 ->** Single sample Re-Genotyping using merged SVs file from 001/ as guidance.
 Sample Re-Genotyping is required to detect SVs focusing on the merged SV site list produced by the previous module. "The main reason to merge and re-genotype is to get accurate genotypes across the same loci in all samples" [Tobias Rauch](https://github.com/dellytools/delly/issues/60). 
 
@@ -70,6 +69,8 @@ Single sample Re-Genotyped .bcf files must be merged into a final .bcf file, fin
 Module 003 takes multiple single sample .bcf files and merges them into a multi-sample .bcf file using `bcftools merge`.
 
 After sample merging, 003 applies `delly-parallel filter` in germline mode to compare read depth ratios between SV carriers and SV non-carriers. A SV is marked as PASS when its read depth ratio meet certain theoretical thresholds. [For more info click here](https://groups.google.com/forum/#!topic/delly-users/44_6F5pa9bI).
+
+Final results are a BCF file for every SV type detected.
 
 ### References
 
