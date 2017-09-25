@@ -70,7 +70,7 @@ After SV calling, module 001 uses `delly-parallel merge` to detect closely locat
 
 ### 002 -> Single sample Re-Genotyping using merged SVs file from 001 as guidance.
 
-Sample Re-Genotyping is required to detect SVs focusing on the merged SV site list produced by the previous module. "The main reason to merge and re-genotype is to get accurate genotypes across the same loci in all samples" [Tobias Rauch](https://github.com/dellytools/delly/issues/60). 
+Sample Re-Genotyping is required to detect SVs focusing on the merged SV site list produced by the previous module. "The main reason to merge and re-genotype is to get accurate genotypes across the same loci in all samples" [[Tobias Rauch]](https://github.com/dellytools/delly/issues/60). 
 
 Module 002 takes .bam files and performs single sample SV calling using `delly-parallel call` for Re-Genotyping using a list of known SV sites. Technically speaking, SV calling is performed the same way as in module 001 (read-pair clustering followed by split-read mapping of breakpoints).
 
