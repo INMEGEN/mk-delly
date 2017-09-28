@@ -5,11 +5,11 @@
 
 ## About mk-delly
 
-The mk-delly pipeline uses Delly2 to detect 5 types of Germline SVs:
+The mk-delly pipeline uses Delly2 to detect 5 types of Germline SVs [1]:
 
-- DUPlications
+- tandem DUPlications
 - DELetions
-- INSertions
+- small INSertions
 - TRAnslocations
 - INVertions
 
@@ -131,3 +131,6 @@ mk-delly/	##Pipeline main directory.
 
 ### References
 [1] [Tobias Rausch, Thomas Zichner, Andreas Schlattl, Adrian M. Stuetz, Vladimir Benes, Jan O. Korbel. Delly: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics 2012 28: i333-i339.](https://academic.oup.com/bioinformatics/article/28/18/i333/245403/DELLY-structural-variant-discovery-by-integrated)
+
+### Author Info
+Developed by [Israel Aguilar](https://www.linkedin.com/in/israel-aguilar-ba625949/) (iaguilaror@gmail.com) for [Winter Genomics](http://www.wintergenomics.com/), by request of [INMEGEN](http://www.inmegen.gob.mx/). 2017.
