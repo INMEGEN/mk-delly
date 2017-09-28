@@ -3,7 +3,7 @@
 ## DESCRIPTION:
 ## Script to print required mk targets to STDOUT.
 ## For use with Delly2 mk module 003, in combination with `xargs mk`.
-## Script searches for every subdirectory at level 1 depth in data/ directory, the manipulates the path string to generate target names for a bcf for every type of Structural Variants detectable by Delly2 (DEL - deletions, DUP - duplications, INV - invertions, TRA - translocations, INS - small insertions).
+## Script searches for every subdirectory at level 1 depth in data/ directory, then manipulates the path string to generate target names for a bcf for every type of Structural Variants detectable by Delly2 (DEL - deletions, DUP - duplications, INV - invertions, TRA - translocations, INS - small insertions).
 ## USAGE:
 ##      bin/targets
 ## AUTHOR:
