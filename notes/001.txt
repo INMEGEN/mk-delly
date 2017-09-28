@@ -1,0 +1,41 @@
+##################################
+##	pipeline mk-delly	##
+##	module 001 notes	##
+##################################
+
+Module execution:
+	Module can be executed from analysis/001/, by any of the following commands:
+
+	1) `mk <SPECIFIC_TARGET>`; where SPECIFIC_TARGET is any line printed by `001/bin/targets`.
+
+	2) `bin/targets | xrags mk`; every posible target printed by 001/bin/targets will be generated.
+
+	3) `condor submit`; parallel generation of every posible target printed by 001/bin/targets. Needs HTCondor to run.
+
+Expected output:
+	Intermediate files:
+	DEL.call.bcf		A BCF file for multi-sample Structural Variant calling. For DELetion events.
+	DEL.call.bcf.csi	An index for the DEL BCF file.
+	DUP.call.bcf		A BCF file for multi-sample Structural Variant calling. For tandem DUPlication events.
+	DUP.call.bcf.csi	An index for the DUP BCF file.
+	INV.call.bcf		A BCF file for multi-sample Structural Variant calling. For INVersion events.
+	INV.call.bcf.csi	An index for the INV BCF file.
+	INS.call.bcf		A BCF file for multi-sample Structural Variant calling. For small INSertion events.
+	INS.call.bcf.csi	An index for the INS BCF file.
+	TRA.call.bcf		A BCF file for multi-sample Structural Variant calling. For TRAnslocation events.
+	TRA.call.bcf.csi	An index for the TRA BCF file.
+
+	Requested output:
+	DEL.merged.bcf		A BCF file enlisting detected Structural Variant sites, collapsed by reciprocal overlap. For DELetion events.
+	DEL.merged.bcf.csi	An index for the DEL merged BCF file.
+	DUP.merged.bcf		A BCF file enlisting detected Structural Variant sites, collapsed by reciprocal overlap. For tandem DUPlication events.
+	DUP.merged.bcf.csi	An index for the DUP merged BCF file.
+	INV.merged.bcf		A BCF file enlisting detected Structural Variant sites, collapsed by reciprocal overlap. For INVersion events.
+	INV.merged.bcf.csi	An index for the INV merged BCF file.
+	INS.merged.bcf		A BCF file enlisting detected Structural Variant sites, collapsed by reciprocal overlap. For small INSertion events.
+	INS.merged.bcf.csi	An index for the INS merged BCF file.
+	TRA.merged.bcf		A BCF file enlisting detected Structural Variant sites, collapsed by reciprocal overlap. For TRAnslocation events.
+	TRA.merged.bcf.csi	An index for the TRA merged BCF file.
+
+Module description:
+	TO-DO
