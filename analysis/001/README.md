@@ -29,8 +29,11 @@ Reference genome files must be located inside mk-delly/reference/
 For every SV-type (DEL, DUP, INV, INS, TRA) the output is a BCF file with a .csi index. Each BCF file lists SVs events in regions of interest. No sample-level data is included in this file.
 
 ## Default parameters and references
-Describe design considerations: teh motives and references from which default parameters were selected.
+Describe design considerations: the motives and references from which default parameters were selected.
 TO-DO
 
 ## References
-[1] [Database of Genomic Variants, FAQs ](http://dgv.tcag.ca/v106/app/faq#q4)
+[1] [Tobias Rausch, Thomas Zichner, Andreas Schlattl, Adrian M. Stuetz, Vladimir Benes, Jan O. Korbel. Delly: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics 2012 28: i333-i339.](https://academic.oup.com/bioinformatics/article/28/18/i333/245403/DELLY-structural-variant-discovery-by-integrated)
+
+### Author Info
+Developed by [Israel Aguilar](https://www.linkedin.com/in/israel-aguilar-ba625949/) (iaguilaror@gmail.com) for [Winter Genomics](http://www.wintergenomics.com/), by request of [INMEGEN](http://www.inmegen.gob.mx/). 2017.
