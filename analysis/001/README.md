@@ -5,7 +5,7 @@
 
 IMPORTANT NOTE: Delly2 must be installed in multi-threading mode, and should me called by `delly-parallel` command.
 
-	## Module objective
+## Module objective
 This module performs a first aproach to Structural Variant (SV) calling using Delly2.
 SV Calling is done using multiple samples at the same time to increase sensitivity and SV breakpoint precision.
 
@@ -26,10 +26,10 @@ A reference genome fasta file is also needed. It must be the same reference used
 Reference genome files must be located inside mk-delly/reference/
 
 ## Output data format
-For every SV-type (DE, DUP, INV, INS, TRA) the output is a BCF file with a .csi index. Each BCF file list SVs events in regions of interest. No sample-level data is included in this file.
+For every SV-type (DEL, DUP, INV, INS, TRA) the output is a BCF file with a .csi index. Each BCF file lists SVs events in regions of interest. No sample-level data is included in this file.
 
 ## Default parameters and references
-Describir Consideraciones de diseño: Los motivos y referencias por los que seleccionan los parámetros por defecto
+Describe design considerations: teh motives and references from which default parameters were selected.
 TO-DO
 
 ## References

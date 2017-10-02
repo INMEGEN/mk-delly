@@ -27,8 +27,8 @@ results/%.delly_germline.bcf: results/%.merged.bcf
 	mkdir -p `dirname $target`
 	delly-parallel filter \
 	-t $stem \
-	-m $MIN_LONG \
-	-n $MAX_LONG \
+	-m $MIN_SIZE \
+	-n $MAX_SIZE \
 	-f germline \
 	-o $target.build \
 	-p \

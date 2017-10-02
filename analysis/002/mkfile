@@ -33,3 +33,4 @@ results/([A-Z]+)/(.+)\.delly_regenotyped\.([A-Z]+)\.bcf:R:
 	data/bams/$stem2.bam \
 	&& mv $target.build $target \
 	&& mv $target.build.csi $target.csi
+

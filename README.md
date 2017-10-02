@@ -46,17 +46,19 @@ mk-delly requires:
 
 ### Configuration file
 
-This pipeline includes a config.mk file (located at mk-delly/config.mk), where you can adjust the following paramters:
+This pipeline includes a config.mk file (located at mk-delly/analysis/001/config.mk, and propagated to every other module), where you can adjust the following paramters:
 
 PATH: path to search for executable files.
 
 REF: path to reference genome.
 
-MIN_LONG: SVs must span at least this number of base pairs to be reported by Delly2. (Delly2 recomendation is 500).
+MIN_SIZE: SVs must span at least this number of base pairs to be reported by Delly2. (Delly2 recomendation is 500).
 
-MAX_LONG: SVs greater than this number of base pair won't be reported by Delly2. (Delly2 recomendation is 1000000).
+MAX_SIZE: SVs greater than this number of base pair won't be reported by Delly2. (Delly2 recomendation is 1000000).
 
 OVERLAP: fraction of reciprocal overlap required by same type SVs to consider them the same event.  (dbVAR recomendation is 0.8, meaning 80% reciprocal overlap).
+
+BP_OFFSET:
 
 ## Module description.
 
