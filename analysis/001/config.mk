@@ -6,7 +6,7 @@ REF="reference/Homo_sapiens_assembly38.fasta"
 
 #Delly2 parametrization
 #Number of threads to run parallel Delly2
-OMP_NUM_THREADS="4"
+OMP_NUM_THREADS="`cat /proc/cpuinfo | grep processor | wc -l`"
 
 #Longitud mínima/máxima de eventos registrados
 MIN_LONG="500"

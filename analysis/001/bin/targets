@@ -8,8 +8,10 @@
 ## AUTHOR:
 ##	Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/) - 2017
 
-echo "results/DEL.merged.bcf"
-echo "results/DUP.merged.bcf"
-echo "results/INV.merged.bcf"
-echo "results/TRA.merged.bcf"
-echo "results/INS.merged.bcf"
+echo "results/DEL.merged.bcf
+results/DUP.merged.bcf
+results/INV.merged.bcf
+results/TRA.merged.bcf
+results/INS.merged.bcf" \
+| stest -v
+
