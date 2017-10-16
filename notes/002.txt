@@ -1,0 +1,40 @@
+##################################
+##	pipeline mk-delly	##
+##	module 002 notes	##
+##################################
+
+Module execution:
+	Module can be executed from analysis/002/, by any of the following commands:
+
+	1) `mk <SPECIFIC_TARGET>`; where SPECIFIC_TARGET is any line printed by `002/bin/targets`.
+
+	2) `bin/targets | xrags mk`; every posible target printed by 002/bin/targets will be generated in tandem.
+
+	3) `condor submit`; parallel generation of every posible target printed by 002/bin/targets. Needs HTCondor to run.
+
+Expected output:
+	Requested output:
+	results/
+	├── DEL		##Directory for Re-Genotyped BCF and index files for DELetions.
+	│	├── sampleN.delly_regenotyped.DEL.bcf
+	│	├── sampleN.delly_regenotyped.DEL.bcf.csi
+	│	└── ...
+	├── DUP		##Directory for Re-Genotyped BCF and index files for tandem DUPlications.
+	│	├── sampleN.delly_regenotyped.DUP.bcf
+	│	├── sampleN.delly_regenotyped.DUP.bcf.csi
+	│	└── ...
+	├── INV		##Directory for Re-Genotyped BCF and index files for INVersions.
+	│	├── sampleN.delly_regenotyped.INV.bcf
+	│	├── sampleN.delly_regenotyped.INV.bcf.csi
+	│	└── ...
+	├── INS		##Directory for Re-Genotyped BCF and index files for small INSertions.
+	│	├── sampleN.delly_regenotyped.INS.bcf
+	│	├── sampleN.delly_regenotyped.INS.bcf.csi
+	│	└── ...
+	└── TRA		##Directory for Re-Genotyped BCF and index files for TRAnslocations.
+		├── sampleN.delly_regenotyped.TRA.bcf
+		├── sampleN.delly_regenotyped.TRA.bcf.csi
+		└── ...
+
+Module description:
+	TO-DO
