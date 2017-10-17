@@ -30,11 +30,3 @@ MAX_SIZE="1000000"
 ##[ -z "$OVERLAP" ] \
 ##&& OVERLAP="0.8"
 OVERLAP="0.8"
-#Maximal breakpoint offset for overlapping SV.
-##[ -z "$BP_OFFSET" ] \
-##&& BP_OFFSET="500"
-BP_OFFSET="500"
-###
-#REFERENCES
-##
-# [1] [Tobias Rausch, Thomas Zichner, Andreas Schlattl, Adrian M. Stuetz, Vladimir Benes, Jan O. Korbel. Delly: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics 2012 28: i333-i339.](https://academic.oup.com/bioinformatics/article/28/18/i333/245403/DELLY-structural-variant-discovery-by-integrated)

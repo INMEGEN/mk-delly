@@ -10,8 +10,8 @@
 ##      Israel Aguilar (iaguilaror@gmail.com), for Winter Genomics (http://www.wintergenomics.com/), by request of INMEGEN (http://www.inmegen.gob.mx/) - 2017
 
 find -L data/ \
--maxdepth 1 \
--mindepth 1 \
--type d \
-| sed -e "s#data/#results/#" \
--e "s#\$#.delly_germline.bcf#"
+	-maxdepth 1 \
+	-mindepth 1 \
+	-type d \
+| sed 	-e "s#data/#results/#" \
+	-e "s#\$#.delly_germline.bcf#"
