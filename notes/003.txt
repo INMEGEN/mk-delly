@@ -1,0 +1,41 @@
+##################################
+##	pipeline mk-delly	##
+##	module 003 notes	##
+##################################
+
+Module execution:
+	Module can be executed from analysis/003/, by any of the following commands:
+
+	1) `mk <SPECIFIC_TARGET>`; where SPECIFIC_TARGET is any line printed by `003/bin/targets`.
+
+	2) `bin/targets | xrags mk`; every posible target printed by 003/bin/targets will be generated in tandem.
+
+	3) `condor submit`; parallel generation of every posible target printed by 003/bin/targets. Needs HTCondor to run.
+
+Expected output:
+	Intermediate files:
+	results/
+	├──DEL.merged.bcf		A BCF file for multiple Re-Genotyped samples Structural Variant calling. For DELetion events.
+	├──DEL.merged.bcf.csi	An index for the DEL BCF file.
+	├──DUP.merged.bcf		A BCF file for multiple Re-Genotyped samples Structural Variant calling. For tandem DUPlication events.
+	├──DUP.merged.bcf.csi	An index for the DUP BCF file.
+	├──INV.merged.bcf		A BCF file for multiple Re-Genotyped samples Structural Variant calling. For INVersion events.
+	├──INV.merged.bcf.csi	An index for the INV BCF file.
+	├──INS.merged.bcf		A BCF file for multiple Re-Genotyped samples Structural Variant calling. For small INSertion events.
+	├──INS.merged.bcf.csi	An index for the INS BCF file.
+	├──TRA.merged.bcf		A BCF file for multiple Re-Genotyped samples Structural Variant calling. For TRAnslocation events.
+	└──TRA.merged.bcf.csi	An index for the TRA BCF file.
+
+	Requested output:
+	├──DEL.delly_germline.bcf		A BCF file with DELetions passing Delly2 germline filter.
+	├──DEL.delly_germline.bcf.csi	An index for the DEL BCF file.
+	├──DUP.delly_germline.bcf		A BCF file with tandem DUPlications passing Delly2 germline filter.
+	├──DUP.delly_germline.bcf.csi	An index for the DUP BCF file.
+	├──INV.delly_germline.bcf		A BCF file with INVertions passing Delly2 germline filter.
+	├──INV.delly_germline.bcf.csi	An index for the INV BCF file.
+	├──INS.delly_germline.bcf		A BCF file with small INSertions passing Delly2 germline filter.
+	├──INS.delly_germline.bcf.csi	An index for the INS BCF file.
+	├──TRA.delly_germline.bcf		A BCF file with TRAnslocations passing Delly2 germline filter.
+	└──TRA.delly_germline.bcf.csi	An index for the TRA BCF file.
+Module description:
+	TO-DO

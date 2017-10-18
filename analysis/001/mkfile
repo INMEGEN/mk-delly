@@ -27,10 +27,10 @@ results/%.merged.bcf:	results/%.call.bcf
 	mkdir -p `dirname $target`
 	delly-parallel merge \
 		-t $stem \
-		-m $MIN_LONG \
-		-n $MAX_LONG \
+		-m $MIN_SIZE \
+		-n $MAX_SIZE \
 		-o $target.build \
-		-b 500 \
+		-b $BP_OFFSET \
 		-r $OVERLAP \
 		$prereq \
         && mv $target.build $target \
