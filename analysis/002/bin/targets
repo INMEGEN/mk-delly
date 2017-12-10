@@ -22,11 +22,11 @@ SV_TYPES=(`find -L data/merged_bcf \
 
 for TYPE in "${SV_TYPES[@]}"
 do
-	find -L data \
+	find -L data/bams \
 		-type f \
 		-name "*.bam" \
 	| sed  \
-		-e "s#data#results/$TYPE#" \
+		-e "s#data/bams#results/$TYPE#" \
 		-e "s#\.bam#\.delly_regenotyped.$TYPE.bcf#"
 done
 

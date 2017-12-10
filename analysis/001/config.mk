@@ -13,7 +13,7 @@ REF="reference/Homo_sapiens_assembly38.fasta"
 #Number of threads to run Delly2 in parallel mode ("Delly2 primarily parallelizes on the sample level. Hence, OMP_NUM_THREADS should be always smaller or equal to the number of input samples"[1]).
 ##[ -z "$OMP_NUM_THREADS" ] \
 ##&& OMP_NUM_THREADS="4"
-OMP_NUM_THREADS="4"
+OMP_NUM_THREADS="24"
 
 ###
 #Delly2, merge configuration.
