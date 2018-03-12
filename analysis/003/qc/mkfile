@@ -1,0 +1,213 @@
+## Read config.mk values
+< config.mk
+
+results/%.delly_germline.qc_report.pdf: results/%.delly_germline.dataframe results/%.for_circos.tsv results/%.chromosome_ranges.tsv
+	set -x
+	mkdir -p `dirname $target`
+#	Rscript --vanilla bin/Graphicator_for_call.R results/$stem.delly_germline.dataframe $target.build \
+#	&& mv $target.build $target
+
+## Create a tabular file in accordance with the OmicsCircos R package format
+## This table is a simplification of the previously created data frame
+## It is used to get the values to draw the circos plot 
+results/%.for_circos.tsv: results/%.delly_germline.dataframe results/%.chromosome_ranges.tsv
+	set -x
+	mkdir -p `dirname $target`
+	{
+		echo "Chromosome	Start	End	Region_id	Strand	AC	Region_length"
+		## An AN threshold (missing data filter) will be applied to keep SVs with sufficient observations in the population 
+		## $4 == $14 only prints SV events were start and end chromosome are the same (this removes Translocations from the output)
+		## $3 >= AN_TH applies the missing data filter
+		## $2 != 0 applies AC filter, it eliminates SV whete no alternative allele was detected in the population
+		## print $4,$5,$15,$6,"+",$2,$15 - $5 + 1 means:
+		## print CHR,POS,END,SVID,strand,AC,Size (as END - POS +1)
+		awk -v AN_TH="$AN_THRESHOLD" '
+			BEGIN {FS="\t"; OFS="\t"}
+			NR != 1 && $4 == $14 && $3 >= AN_TH && $2 != 0 {print $4,$5,$15,$6,"+",$2,$15 - $5 + 1}
+		' $prereq
+	} > $target.build \
+	&& mv $target.build $target
+
+## For every SV line, Allele count and Allele number is calculated
+## Also, VCF format is passed to tabular format, to prepares as R readable data frame format.
+## This reduces computation load in R
+results/%.delly_germline.dataframe: results/%.delly_germline.vcf_body
+#	set -x
+	mkdir -p `dirname $target`
+	{
+		echo "GENOTYPES AC AN CHR POS ID REF ALT QUAL FILTER PRECISION SVTYPE SVMETHOD CHR2 END PE MAPQ CT CIPOS CIEND RDRATIO INSLEN HOMLEN SR SRQ CONSENSUS CE" | tr " " "\t"
+		while read VCF_LINE
+		do
+		## Variables default values initiation ## to avoid carrying values from a previously calculated SV stats
+		BODY_LINE_PART1="NA"
+		BODY_LINE_PART2="NA"
+		AC="NA"
+		AN="NA"
+		GENOTYPES="NA"
+		#### Line part 1 is CHR to FILTER fields
+		BODY_LINE_PART1=`echo $VCF_LINE \
+			| cut -d" " -f1-7 \
+			| tr " " "\t"`
+		#### Line part 2 is INFO field, wich will need to be parsed diferently since here separator is the ";" character
+		BODY_LINE_PART2=`echo $VCF_LINE \
+			| cut -d" " -f8 \
+			| tr ";" "\n" \
+			| sed "s#.*=##g" \
+			| tr "\n" "\t" \
+			| sed "s#\t\\$##"`
+		#### Extract first ":" separated field from the sample columns, the paste it togheter by removing the \n characters (ends like "1/10/10/0"... etc)
+		GENOTYPES=`echo $VCF_LINE \
+			| cut -d" " -f10- \
+			| tr " " "\n" \
+			| cut -d ":" -f1 \
+			| tr -d "\n"`
+		##### remove every non 1 character in the genotypes value (tr -cd, -c complement, as in NOT the especified character, -d delete. In other words, it keeps only the characters 1 in the GENOTYPES; then, count characters with wc -c)
+		AC=`echo "$GENOTYPES" \
+			| tr -cd '1' \
+			| wc -c`
+		##### remove every non called genotype (tr -d ".") and slash character (tr -d "/") the count. This efectively counts the called genotypes.
+		## Then we substract 1 !!! Check why this is neccessary. probably a blank character is beign counted, added in the GENOTYPES variable declaration
+		AN=$(( \
+			`echo "$GENOTYPES" \
+			| tr -d "." \
+			| tr -d "/" \
+			| wc -c` \
+			- 1))
+		echo "$GENOTYPES $AC $AN $BODY_LINE_PART1 $BODY_LINE_PART2" | tr " " "\t"
+		done < results/$stem.delly_germline.vcf_body
+	} > $target.build \
+	&& mv $target.build $target \
+	&& rm $prereq
+
+## Extract the bcf body
+## probably could be simplified or used as prereq for "body for genotypes", and "body for sizes" mk recipe
+results/%.delly_germline.vcf_body: data/%.delly_germline.bcf
+	set -x
+	mkdir -p `dirname $target`
+		bcftools view -H data/$stem.delly_germline.bcf \
+	> $target.build \
+	&& mv $target.build $target
+
+## For every sample, and every SV line with an alternate allele in the sample, calculate the size of the SV event
+results/%.delly_germline.size_stats: results/%.samples.list results/%.delly_germline.vcf_body_for_sizes
+	set -x
+	{
+		echo "Sample SV_type Start End Size" | tr " " "\t"
+		while read SAMPLE
+		do
+			SAMPLE_COL=`head -n1 results/$stem.delly_germline.vcf_body_for_sizes \
+				| tr "\t" "\n" \
+				| grep -n "$SAMPLE" \
+				| cut -d":" -f1`
+			## cut CHR POS INFO and Sample genotype column
+			## then keep only lines (or SV) with an alt genotype (0/1, 1/0 or 1/1)
+			## then use awk to extract from info field the SVTYPE ccording to delly, and the END position of the SV
+			## ABOVE WILL NOT WORK FOR TRANSLOCATIONS since chromosome of destination is not checked
+			cut -f1,2,3,$SAMPLE_COL results/$stem.delly_germline.vcf_body_for_sizes \
+			| grep -e "1/0" -e "0/1" -e "1/1" \
+			| tr ";" "\t" \
+			| awk -v sample="$SAMPLE" ' BEGIN {FS="\t"; OFS="\t"} {gsub("SVTYPE=", "", $4) ;  gsub("END=", "", $7) ; print sample,$4,$2,$7,$7 - $2}'
+		done < results/$stem.samples.list
+	} > $target.build \
+	&& mv $target.build $target \
+	&& rm results/$stem.delly_germline.vcf_body_for_sizes
+
+## Extract position columns, INFO field and Sample columns to parse with a `while read do done < genotype file` loop
+results/%.delly_germline.vcf_body_for_sizes: data/%.delly_germline.bcf 
+	set -x
+	mkdir -p `dirname $target`
+	{
+		bcftools view -h data/$stem.delly_germline.bcf | tail -n1
+		bcftools view -H data/$stem.delly_germline.bcf
+	} | cut -f1,2,8,10- > $target.build \
+	&& mv $target.build $target
+
+## Calculate some simple stats: Sample SV_type Number_of_SVs Number_of_ref_homozygous Number_of_alt_homozygous Number_of_heterozygous
+results/%.delly_germline.sample_stats: results/%.samples.list
+#	set -x
+	{
+	echo "Sample SV_type Number_of_SVs Number_of_ref_homozygous Number_of_alt_homozygous Number_of_heterozygous" | tr " " "\t"
+	while read SAMPLE
+	do
+		SAMPLE_COL=`head -n1 results/$stem.delly_germline.genotypes \
+			| tr "\t" "\n" \
+			| grep -n "$SAMPLE" \
+			| cut -d":" -f1`
+		NUMBER_OF_SV=`cut -f $SAMPLE_COL results/$stem.delly_germline.genotypes \
+			| grep -v "\./\." \
+			| grep -c "1"`
+		NUMBER_OF_REF_HOM=`cut -f $SAMPLE_COL results/$stem.delly_germline.genotypes \
+			| grep -v "\./\." \
+			| grep -c "0/0"`
+		NUMBER_OF_ALT_HOM=`cut -f $SAMPLE_COL  results/$stem.delly_germline.genotypes \
+			| grep -v "\./\." \
+			| grep -c "1/1"`
+		NUMBER_OF_HET=`cut -f $SAMPLE_COL  results/$stem.delly_germline.genotypes \
+			| grep -v "\./\." \
+			| grep -e "0/1" -e "1/0" -e "1/\." -e "\./1" \
+			| wc -l`
+		echo "$SAMPLE $stem $NUMBER_OF_SV $NUMBER_OF_REF_HOM $NUMBER_OF_ALT_HOM $NUMBER_OF_HET" | tr " " "\t"
+	done < $prereq
+	} > $target.build \
+	&& mv $target.build $target
+
+## Extract first line from genotypes file (names of samples), and pass it to list format
+results/%.samples.list: results/%.delly_germline.genotypes
+#	set -x
+	head -n1 $prereq | tr "\t" "\n" > $target.build \
+	&& mv $target.build $target
+
+## Parse line by line to extract genotype subfield from each sample column
+results/%.delly_germline.genotypes: results/%.delly_germline.vcf_body_for_genotypes
+#	set -x
+	{
+		while read VCF_LINE
+		do
+			GENOTYPES=`echo $VCF_LINE \
+				| cut -d" " -f10- \
+				| tr " " "\n" \
+				| cut -d ":" -f1 \
+				| tr "\n" " " \
+				| sed 's# \\$##'`
+			echo $GENOTYPES | tr " " "\t"
+		done < $prereq
+	} > $target.build \
+	&& mv $target.build $target \
+	&& rm $prereq
+
+## Extract genotype columns (with sample header) to parse with a `while read do done < genotype file` loop
+results/%.delly_germline.vcf_body_for_genotypes: data/%.delly_germline.bcf
+#	set -x
+	mkdir -p `dirname $target`
+	{
+		bcftools view -h data/$stem.delly_germline.bcf | tail -n1
+		bcftools view -H data/$stem.delly_germline.bcf
+	} | cut -f10- > $target.build \
+	&& mv $target.build $target
+
+## Get the chromosome length data
+## Output format is in accordance with the one used by OmicCircos vignete to build the circos base rim
+results/%.chromosome_ranges.tsv: data/%.delly_germline.bcf
+#	set -x
+	mkdir -p `dirname $target`
+	{
+		echo "Chromosome Start End Region_id Value" | tr " " "\t"
+		bcftools view -h data/$stem.delly_germline.bcf \
+		| cut -d"_" -f1 \
+		| grep "," \
+		| grep "##contig=<ID=chr[0-9XYM]\+" \
+		| tr "=" "\t" | tr "," "\t" | tr -d ">" \
+		| awk 'BEGIN {FS="\t"; OFS="\t"} {print $3,"1",$5,"region"$3,"NA"}'
+	} > $target.build \
+	&& mv $target.build $target
+
+## Generate circos required dataframes for DEL, DUP, INV
+circos:V: results/DEL.for_circos.tsv results/DUP.for_circos.tsv results/INV.for_circos.tsv
+	set -x
+	mkdir -p results/
+
+clean:V:
+	set -x
+
+stats:V: results/DEL.delly_germline.sample_stats results/DUP.delly_germline.sample_stats results/INV.delly_germline.sample_stats results/DEL.delly_germline.size_stats results/DUP.delly_germline.size_stats results/INV.delly_germline.size_stats
+	set -x

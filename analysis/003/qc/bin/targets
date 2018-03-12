@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find -L data/ \
+        -type f \
+        -name "*.delly_germline.bcf" \
+| sed -r \
+        -e 's#data/#results/#' \
+        -e 's#\.bcf#\.qc_report\.pdf#'
